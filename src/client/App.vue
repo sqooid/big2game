@@ -1,7 +1,11 @@
 <template>
   <n-config-provider :theme="theme" :theme-overrides="themeOverrides">
     <n-global-style />
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <transition name="fade-left" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </n-config-provider>
 </template>
 
@@ -10,8 +14,6 @@ import './styles.css'
 import { useStore } from 'vuex'
 
 import {
-  NButton,
-  NCard,
   darkTheme,
   GlobalThemeOverrides,
   NConfigProvider,
@@ -27,7 +29,7 @@ const themeOverrides: GlobalThemeOverrides = {}
 
 // Theme management
 const theme = computed(() => {
-  if (store.state.theme === 'light') return null
+  if (store.state.clientSettings.theme === 'light') return null
   return darkTheme
 })
 </script>
