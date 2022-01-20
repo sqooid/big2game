@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve-client": "vue-cli-service serve",
+    "build-client": "vue-cli-service build --dest build/client",
+    "clean-server": "rimraf ./build/server/",
+    "serve-server": "nodemon ./src/server/index.ts",
+    "build-server": "npm run clean-server && tsc --project tsconfig.build.server.json",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -33,7 +36,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "nodemon": "^2.0.15",
     "prettier": "^2.4.1",
+    "ts-node": "^10.4.0",
     "typescript": "~4.1.5"
   }
 }

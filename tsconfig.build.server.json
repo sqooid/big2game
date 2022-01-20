@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.debug.server.json",
+  "compilerOptions": {
+    "sourceMap": false
+  }
+}
