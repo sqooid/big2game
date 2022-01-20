@@ -1,30 +1,37 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <n-config-provider :theme="theme" :theme-overrides="themeOverrides">
+    <n-global-style />
+    <n-card>
+      <n-button>Hello</n-button>
+    </n-card>
+  </n-config-provider>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts" setup>
+import './styles.css'
+import { useStore } from 'vuex'
 
-nav {
-  padding: 30px;
-}
+import {
+  NButton,
+  NCard,
+  darkTheme,
+  GlobalThemeOverrides,
+  NConfigProvider,
+  NGlobalStyle,
+} from 'naive-ui'
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+import { key } from '@/client/store'
+import { computed } from 'vue'
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+const store = useStore(key)
+
+const themeOverrides: GlobalThemeOverrides = {}
+
+// Theme management
+const theme = computed(() => {
+  if (store.state.theme === 'light') return null
+  return darkTheme
+})
+</script>
+
+<style scoped></style>
