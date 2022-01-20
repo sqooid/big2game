@@ -1,3 +1,4 @@
 {
-	"watch": ["src/shared","src/server"]
+  "watch": ["src/shared", "src/server"],
+  "exec": "node -r tsconfig-paths/register -r ts-node/register ./src/server/index.ts"
 }

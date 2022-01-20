@@ -1,9 +1,7 @@
 <template>
   <n-config-provider :theme="theme" :theme-overrides="themeOverrides">
     <n-global-style />
-    <n-card>
-      <n-button>Hello</n-button>
-    </n-card>
+    <router-view></router-view>
   </n-config-provider>
 </template>
 
