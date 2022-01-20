@@ -1,3 +1,24 @@
 import dotenv from 'dotenv'
+import express from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
+
 dotenv.config()
-console.log(process.env.PORT)
+
+const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
+
+const workingDir = process.env.WORKING_DIR ?? '.'
+process.chdir(workingDir)
+app.use(express.static(workingDir)) // Fix working root directory
+
+app.get('/', (req, res) => {
+  console.log('Page served')
+  res.sendFile(process.cwd() + '/client/index.html')
+})
+
+const port = process.env.PORT
+server.listen(port, () => {
+  console.log('Listening on port', port)
+})
