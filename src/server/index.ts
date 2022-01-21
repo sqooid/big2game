@@ -21,13 +21,13 @@ const io = new Server<ServerToClientEvents, ClientToServerEvents>(server, {
   },
 })
 
-const workingDir = process.env.WORKING_DIR ?? '.'
+const workingDir = process.env.WORKING_DIR ?? '../client'
 process.chdir(workingDir)
 app.use(express.static(workingDir)) // Fix working root directory
 
 app.get('/', (req, res) => {
   console.log('Page served')
-  res.sendFile(process.cwd() + '/client/index.html')
+  res.sendFile(process.cwd() + '/index.html')
 })
 
 io.on('connection', (socket) => {

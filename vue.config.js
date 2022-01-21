@@ -1,6 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  publicPath: '/client/',
   transpileDependencies: true,
   configureWebpack: {
     resolve: {
@@ -15,5 +14,3 @@ module.exports = defineConfig({
     },
   },
 })
-
-console.log('dir: ', process.cwd())
