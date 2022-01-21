@@ -1,5 +1,5 @@
-import { ClientGame } from '@/client/code/game'
-import { LobbySettings } from '@/shared/lobby'
+import { ClientGame } from '@/shared/client-game'
+import { ClientLobby, LobbySettings } from '@/shared/lobby'
 import { ClientSocket } from '@/shared/socket-events'
 import { User } from '@/shared/user'
 import { InjectionKey } from 'vue'
@@ -7,13 +7,7 @@ import { createStore, Store } from 'vuex'
 
 export interface State {
   socket?: ClientSocket
-  lobby?: {
-    host: User
-    players: User[]
-    spectators: User[]
-    settings: LobbySettings
-    game: ClientGame
-  }
+  lobby?: ClientLobby
   clientSettings: {
     theme: 'light' | 'dark'
   }
@@ -22,6 +16,7 @@ export interface State {
 export const key: InjectionKey<Store<State>> = Symbol()
 
 export const Mutations = {
+  ID: 'id',
   SOCKET: 'socket',
   HOST: 'host',
   PLAYERS: 'players',
@@ -38,6 +33,10 @@ export default createStore<State>({
   },
   getters: {},
   mutations: {
+    [Mutations.ID](state, id: string) {
+      if (!state.lobby) return
+      state.lobby.id = id
+    },
     [Mutations.SOCKET](state, socket: ClientSocket) {
       state.socket = socket
     },

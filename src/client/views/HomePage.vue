@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts" setup>
+import { createLobby } from '@/client/code/session'
 import router from '@/client/router'
 import { NSpace, NButton, NInput, NInputGroup } from 'naive-ui'
 
-const onCreate = () => {
-  return
+const onCreate = async () => {
+  createLobby()
 }
 
 const onJoin = () => {
