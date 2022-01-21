@@ -1,16 +1,18 @@
 import { sendLobby } from '@/server/send'
 import { createLobby, createUser, userMap } from '@/server/maps'
 import { ClientEmits } from '@/shared/socket-events'
+import { generateName } from '@/server/utils'
 
 export function handleClientEvent(
   socketId: string,
   type: ClientEmits,
-  payload: any,
+  payload?: any,
 ) {
   switch (type) {
     case ClientEmits.CREATE_USER:
       {
-        createUser(socketId, payload.name)
+        const name = payload?.name ?? generateName()
+        createUser(socketId, name)
       }
       break
     case ClientEmits.CREATE_LOBBY:
@@ -20,7 +22,6 @@ export function handleClientEvent(
         const newLobby = createLobby(host)
         console.log('New lobby created')
         host.lobby = newLobby
-        host.playerIndex = 0
         sendLobby(host)
       }
       break

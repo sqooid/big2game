@@ -34,13 +34,14 @@ export function getClientSpecGame(
 export function getClientLobby(user: ServerUser): ClientLobby | undefined {
   const serverLobby = user.lobby
   if (!serverLobby) return undefined
+  const playerIndex = serverLobby.players.indexOf(user)
   return {
     id: serverLobby.id,
     host: serverUserToUser(serverLobby.host),
     players: serverLobby.players.map((user) => serverUserToUser(user)),
     spectators: serverLobby.spectators.map((user) => serverUserToUser(user)),
     settings: serverLobby.settings,
-    game: getClientSpecGame(serverLobby.game, user.playerIndex),
+    game: getClientSpecGame(serverLobby.game, playerIndex),
   }
 }
 

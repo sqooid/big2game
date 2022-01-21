@@ -3,20 +3,24 @@
     <n-space vertical>
       <h1 class="name">Big Two</h1>
       <n-space justify="center">
+        <!-- Name -->
         <n-input placeholder="Player name" @change="onChangeName" />
       </n-space>
       <n-space justify="center">
-        <n-button @click="onCreate">Create</n-button>
+        <!-- Create -->
+        <n-button :loading="createLoading" @click="onCreate">Create</n-button>
       </n-space>
       <n-space justify="center">
+        <!-- Join -->
         <n-input-group class="input-group">
           <n-input
             v-model:value="joinId"
             placeholder="Lobby code"
             @keydown.enter="onJoin" />
-          <n-button @click="onJoin">Join</n-button>
+          <n-button :loading="joinLoading" @click="onJoin">Join</n-button>
         </n-input-group>
       </n-space>
+      <!-- Theme -->
       <n-switch :on-update:value="onSwitchTheme"></n-switch>
     </n-space>
   </div>
@@ -32,14 +36,11 @@ import { useStore } from 'vuex'
 
 const store = useStore(key)
 
-const playerName = computed(() => {
-  return store.state.name
-})
-
 watch(
   () => store.state.lobby?.id || '',
   (id) => {
     if (!id) return
+    createLoading.value = false
     router.push({ name: 'lobby', params: { id } })
   },
 )
@@ -49,12 +50,15 @@ const onChangeName = (name: string) => {
   store.commit(Mutations.NAME, name)
 }
 
+const createLoading = ref(false)
 const onCreate = async () => {
+  createLoading.value = true
   startUser()
   startLobby()
 }
 
 const joinId = ref('')
+const joinLoading = ref(false)
 const onJoin = () => {
   router.push({ name: 'lobby', params: { id: joinId.value } })
 }

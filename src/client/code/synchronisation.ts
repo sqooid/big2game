@@ -1,17 +1,22 @@
-import storeInstance, { key, Mutations } from '@/client/store'
-import { ClientLobby } from '@/shared/interfaces/client-interfaces'
-import { ClientSocket, ServerEmits } from '@/shared/socket-events'
+import store, { key, Mutations } from '@/client/store'
+import { ClientLobby, ClientUser } from '@/shared/interfaces/client-interfaces'
+import {
+  ClientSocket,
+  ServerEmits,
+  ServerSyncLobby,
+  ServerSyncUser,
+} from '@/shared/socket-events'
 
-export function startSyncLobby(socket: ClientSocket) {
-  socket.on('server', (type, payload) => {
+export function listenLobby(socket: ClientSocket) {
+  socket.on('server', (type, payload: ServerSyncLobby) => {
     if (type === ServerEmits.SYNC_LOBBY) {
       updateLobby(payload.lobby)
+      console.log(payload.lobby)
     }
   })
 }
 
 export function updateLobby(lobby: Partial<ClientLobby>) {
-  const store = storeInstance
   if (!store.state.lobby) {
     store.commit(Mutations.LOBBY, lobby)
     return
@@ -22,4 +27,20 @@ export function updateLobby(lobby: Partial<ClientLobby>) {
   if (lobby.spectators) store.commit(Mutations.SPECTATORS, lobby.spectators)
   if (lobby.settings) store.commit(Mutations.LOBBY_SETTINGS, lobby.settings)
   if (lobby.game) store.commit(Mutations.GAME, lobby.game)
+}
+
+export function listenUser(socket: ClientSocket) {
+  socket.on('server', (type, payload: ServerSyncUser) => {
+    if (type === ServerEmits.SYNC_USER) {
+      updateUser(payload.user)
+    }
+  })
+}
+
+export function updateUser(user: Partial<ClientUser>) {
+  if (!store.state.user) {
+    store.commit(Mutations.USER, user)
+    return
+  }
+  if (user.name) store.commit(Mutations.NAME, user.name)
 }

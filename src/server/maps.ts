@@ -32,7 +32,7 @@ export function createLobby(host: ServerUser): ServerLobby {
   const newLobby: ServerLobby = {
     id: lobbyId,
     host: host,
-    players: [],
+    players: [host],
     spectators: [],
     settings: {
       deal: {

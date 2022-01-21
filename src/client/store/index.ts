@@ -10,7 +10,7 @@ import { createStore, Store } from 'vuex'
 
 export interface State {
   socket?: ClientSocket
-  name: string
+  user?: ClientUser
   lobby?: ClientLobby
   clientSettings: {
     theme: 'light' | 'dark'
@@ -20,6 +20,7 @@ export interface State {
 export const key: InjectionKey<Store<State>> = Symbol()
 
 export const Mutations = {
+  USER: 'user',
   NAME: 'name',
   LOBBY: 'lobby',
   ID: 'id',
@@ -34,15 +35,18 @@ export const Mutations = {
 
 export default createStore<State>({
   state: {
-    name: 'Jimmy',
     clientSettings: {
       theme: 'light',
     },
   },
   getters: {},
   mutations: {
+    [Mutations.USER](state, user: ClientUser) {
+      state.user = user
+    },
     [Mutations.NAME](state, name: string) {
-      state.name = name
+      if (!state.user) return
+      state.user.name = name
     },
     [Mutations.LOBBY](state, lobby: ClientLobby) {
       state.lobby = lobby

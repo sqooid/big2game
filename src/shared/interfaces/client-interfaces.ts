@@ -13,7 +13,6 @@ export interface ClientGame {
 export interface ClientUser {
   socketId: string
   name: string
-  playerIndex?: number
 }
 
 export interface ClientLobby {
