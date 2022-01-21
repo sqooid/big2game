@@ -1,19 +1,30 @@
 import { Socket } from 'socket.io-client'
 import { Socket as SSocket } from 'socket.io'
+import { ClientLobby } from '@/shared/interfaces/client-interfaces'
 
-export enum SocketEmitTypes {
+export enum ClientEmits {
+  CREATE_USER,
   CREATE_LOBBY,
+}
+
+export interface CreateUserPayload {
+  name: string
+}
+
+export enum ServerEmits {
   SYNC_LOBBY,
 }
 
+export interface SyncLobbyPayload {
+  lobby: Partial<ClientLobby>
+}
+
 export interface ServerToClientEvents {
-  ping: () => void
-  general: (type: SocketEmitTypes, payload?: any) => void
+  server: (type: ServerEmits, payload?: any) => void
 }
 
 export interface ClientToServerEvents {
-  ping: () => void
-  general: (type: SocketEmitTypes, payload?: any) => void
+  client: (type: ClientEmits, payload?: any) => void
 }
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>

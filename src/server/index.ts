@@ -1,8 +1,7 @@
 import { handleClientEvent } from '@/server/event-handler'
+import { createUser } from '@/server/maps'
 import {
-  ClientSocket,
   ClientToServerEvents,
-  ServerSocket,
   ServerToClientEvents,
 } from '@/shared/socket-events'
 import dotenv from 'dotenv'
@@ -14,7 +13,7 @@ dotenv.config()
 
 const app = express()
 const server = http.createServer(app)
-const io = new Server<ServerToClientEvents, ClientToServerEvents>(server, {
+export const io = new Server(server, {
   serveClient: false,
   cors: {
     origin: ['http://localhost:8080'],
@@ -33,8 +32,8 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Client connected')
 
-  socket.on('general', (type, payload) => {
-    handleClientEvent(type, payload)
+  socket.on('client', (type, payload) => {
+    handleClientEvent(socket.id, type, payload)
   })
 
   socket.on('disconnect', () => {
