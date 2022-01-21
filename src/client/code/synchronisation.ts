@@ -11,7 +11,6 @@ export function startSyncLobby(socket: ClientSocket) {
 }
 
 export function updateLobby(lobby: Partial<ClientLobby>) {
-  console.log('Updated lobby', lobby)
   const store = storeInstance
   if (!store.state.lobby) {
     store.commit(Mutations.LOBBY, lobby)

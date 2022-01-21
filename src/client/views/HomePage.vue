@@ -3,14 +3,17 @@
     <n-space vertical>
       <h1 class="name">Big Two</h1>
       <n-space justify="center">
-        <n-input placeholder="Player name" :on-change="onChangeName" />
+        <n-input placeholder="Player name" @change="onChangeName" />
       </n-space>
       <n-space justify="center">
         <n-button @click="onCreate">Create</n-button>
       </n-space>
       <n-space justify="center">
         <n-input-group class="input-group">
-          <n-input placeholder="Lobby code" @keydown.enter="onJoin" />
+          <n-input
+            v-model:value="joinId"
+            placeholder="Lobby code"
+            @keydown.enter="onJoin" />
           <n-button @click="onJoin">Join</n-button>
         </n-input-group>
       </n-space>
@@ -36,15 +39,14 @@ const playerName = computed(() => {
 watch(
   () => store.state.lobby?.id || '',
   (id) => {
-    console.log('ticked')
     if (!id) return
     router.push({ name: 'lobby', params: { id } })
   },
 )
 
-const onChangeName = (val: string) => {
-  console.log('Changed name to', val)
-  store.commit(Mutations.NAME, val)
+const onChangeName = (name: string) => {
+  console.log('Hello', name)
+  store.commit(Mutations.NAME, name)
 }
 
 const onCreate = async () => {
@@ -52,8 +54,9 @@ const onCreate = async () => {
   startLobby()
 }
 
+const joinId = ref('')
 const onJoin = () => {
-  console.log('Joining lobby')
+  router.push({ name: 'lobby', params: { id: joinId.value } })
 }
 
 const onSwitchTheme = (value: boolean) => {
